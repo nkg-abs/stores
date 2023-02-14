@@ -19,9 +19,9 @@ const stores = {
         data: payload,
     }),
 
-	read: ({ url, entityName, id, parentKey }) => makeRequest({
+	read: ({ url, id, entityName }) => makeRequest({
         method: 'get',
-        url: `${ url }${ tableName }?${ parentKey }=${ id }`,
+        url: `${ url }${ entityName }/${ id }`,
     }),
 };
 
