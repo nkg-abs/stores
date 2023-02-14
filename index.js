@@ -1,25 +1,25 @@
 const makeRequest = require('./requestHandler');
 
 const stores = {
-	create: ({ url, payload, tableName }) => makeRequest({
+	create: ({ url, payload, entityName }) => makeRequest({
         method: 'post',
-        url: `${ url }${ tableName }`,
+        url: `${ url }${ entityName }`,
         data: payload,
     }),
 
-	update: ({ url, payload, tableName, id }) => makeRequest({
+	update: ({ url, payload, entityName, id }) => makeRequest({
         method: 'put',
-        url: `${ url }${ tableName }/${ id }`,
+        url: `${ url }${ entityName }/${ id }`,
         data: payload,
     }),
 
-	delete: ({ url, data, tableName, id }) => makeRequest({
+	delete: ({ url, payload, entityName, id }) => makeRequest({
         method: 'delete',
-        url: `${ url }${ tableName }/${ id }`,
-        data: data,
+        url: `${ url }${ entityName }/${ id }`,
+        data: payload,
     }),
 
-	read: ({ url, tableName, id, parentKey }) => makeRequest({
+	read: ({ url, entityName, id, parentKey }) => makeRequest({
         method: 'get',
         url: `${ url }${ tableName }?${ parentKey }=${ id }`,
     }),
