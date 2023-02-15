@@ -2,8 +2,7 @@ const makeRequest = require('./requestHandler');
 
 const getStore = ({ url, entityName }) => {
     const baseURL = `${ url }${ entityName }`;
-
-    return {
+    const stores = {
         create: ({ payload }) => makeRequest({
             method: 'post',
             url: baseURL,
@@ -26,6 +25,12 @@ const getStore = ({ url, entityName }) => {
             method: 'get',
             url: `${ baseURL }/${ id }`,
         }),
+    };
+
+    return (context) => {
+        const { action } = context;
+
+        return stores[action](context);
     };
 };
 
