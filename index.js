@@ -1,34 +1,41 @@
 const makeRequest = require('./requestHandler');
 
-const getStore = ({ url, entityName }) => {
-	const baseURL = `${ url }${ entityName }`;
+const getStore = ({ data: {url, entityName }}) => {
+	const baseURL = `${url}/${entityName}`;
 	const stores = {
-        create: ({ payload }) => makeRequest({
-            method: 'post',
-            url: baseURL,
-            data: payload,
-        }),
+		create: ({ data: { payload } }) =>
+			makeRequest({
+				method: 'post',
+				url: baseURL,
+				data: payload,
+			}),
 
-        update: ({ payload, id }) => makeRequest({
-            method: 'put',
-            url: `${ baseURL }/${ id }`,
-            data: payload,
-        }),
+		update: ({ data: { payload, payload: { id } } }) =>
+			makeRequest({
+				method: 'put',
+				url: `${baseURL}/${id}`,
+				data: payload,
+			}),
 
-        delete: ({ payload, id }) => makeRequest({
-            method: 'delete',
-            url: `${ baseURL }/${ id }`,
-            data: payload,
-        }),
+		delete: ({ data: { payload, payload: { id } } }) =>
+			makeRequest({
+				method: 'delete',
+				url: `${baseURL}/${id}`,
+				data: payload,
+			}),
 
-        read: ({ id }) => makeRequest({
-            method: 'get',
-            url: `${ baseURL }/${ id }`,
-        }),
+		read: (context) => {
+			const { data: { payload }} = context;
+
+			return makeRequest({
+				method: 'get',
+				url: payload?.id ? `${baseURL}/${id}` : baseURL,
+			});
+		},
 	};
 
 	return (context) => {
-		const { action } = context;
+		const { data: { action } } = context;
 
 		return stores[action](context);
 	};
